@@ -1,0 +1,8 @@
+{
+  "name": "survive-or-thrive",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "https://github.com/k-morgan22/survive-or-thrive.git",
+  "author": "kmorgan <kiki.morgan13@gmail.com>",
+  "license": "MIT"
+}
