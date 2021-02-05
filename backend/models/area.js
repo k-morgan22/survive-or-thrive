@@ -1,17 +1,12 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const areaSchema = new mongoose.Schema({ 
-  title: {
-    type: String,
-    required: true
-  },
-  summary: {
-    type: String,
-    required: true
-  },
-  goals: {
-    type: Array
-  }
+  title: String,
+  summary: String,
+  goals: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Goal"
+  }]
 });
 
-export default mongoose.model('Area', areaSchema);
+module.exports = mongoose.model('Area', areaSchema);

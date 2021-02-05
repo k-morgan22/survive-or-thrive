@@ -1,20 +1,19 @@
-import { gql } from 'apollo-server'; 
+const { gql } = require('apollo-server')
 
-const area = gql` 
+module.exports = gql` 
   type Area { 
     id: ID!
     title: String!
     summary: String!
-    goals: [String]
+    goals: [Goal!]
   }
   input AreaInput { 
     title: String!
     summary: String!
-    goals: [String] 
   }
 
   type Query { 
-    areas: [Area]
+    areas: [Area!]
     area(id: ID!): Area
   }
   type Mutation { 
@@ -24,4 +23,3 @@ const area = gql`
   }
 
 `
-export default area 

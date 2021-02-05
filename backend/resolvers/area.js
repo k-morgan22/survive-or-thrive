@@ -1,27 +1,36 @@
-import Area from '../models/area.js'
+const Area = require('../models/area')
+const Goal = require('../models/goal')
 
 const resolvers = {
   Query: {
-    areas: function(){                     
-      return Area.find({});
+    areas: async () => {   
+      const areas = await Area.find().populate('goals')
+      return areas
     },
-    area: function(parent, args){
-      return Area.findById(args.id)
+    area: async (_, args) => {
+      const area =  await Area.findById(args.id)
+      return area
     }
   },
   Mutation: {
-    createArea: function(parent, args){
-      let area = new Area(args.areaInput);
-      return area.save();
+    createArea: async (_, args) => {
+      const area = new Area(args.areaInput); 
+      const createdArea = await area.save()
+      return {
+        ...createdArea._doc,
+        id: createdArea._doc._id.toString()
+      }
     },
-    deleteArea: function(parent, args){
-      return Area.findByIdAndRemove(args.id);
+    deleteArea: async (_, args) => {
+      const toDelete = await Area.findByIdAndRemove(args.id);
+      return toDelete
     },
-    updateArea: function(parent, args){
-      return Area.findByIdAndUpdate(args.id, args.areaInput, {new: true});
+    updateArea: async (_, args) => {
+      const updatedArea = await Area.findByIdAndUpdate(args.id, args.areaInput, {new: true});
+      return updatedArea
     }
   }
 }
 
 
-export default resolvers
+module.exports = resolvers

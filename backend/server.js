@@ -1,12 +1,23 @@
-import { ApolloServer } from 'apollo-server';
-import mongoose from 'mongoose';
-import typeDefs from './typeDefs/index.js';
-import resolvers from './resolvers/index.js'; 
+const { ApolloServer } = require('apollo-server');
+const mongoose = require('mongoose');
+const path = require('path');
+const { mergeTypeDefs, mergeResolvers, loadFilesSync } = require('graphql-tools')
+
+
+//merge typeDefs and resolvers
+const typeDefs = mergeTypeDefs(loadFilesSync(path.join(__dirname, "./typeDefs")))
+const resolvers = mergeResolvers(loadFilesSync(path.join(__dirname, "./resolvers")))
+
 
 const PORT = 4000; 
-const MONGODB_URI = "mongodb://localhost:27017/my_local_db";   
+const DB_URI = "mongodb://localhost:27017/my_local_db";   
+const DB_OPTIONS = {
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+}
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true }); 
+mongoose.connect(DB_URI, DB_OPTIONS); 
 mongoose.connection.once('open', function() { 
   console.log('Connected to the Database.');
 });
