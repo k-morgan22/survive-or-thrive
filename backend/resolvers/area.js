@@ -19,8 +19,13 @@ const resolvers = {
       return createdArea
     },
     deleteArea: async (_, args) => {
-      const toDelete = await Area.findByIdAndRemove(args.id);
-      return toDelete
+      const area = await Area.findById(args.id)
+
+      //delete goals linked to specific area
+      await Goal.deleteMany({_id: {$in: area.goals}})
+
+      const deleted = await Area.findByIdAndDelete(args.id);
+      return deleted
     },
     updateArea: async (_, args) => {
       const updatedArea = await Area.findByIdAndUpdate(args.id, args.areaInput, {new: true});

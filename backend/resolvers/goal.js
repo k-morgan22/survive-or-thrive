@@ -13,7 +13,7 @@ const resolvers = {
     }
   },
   Mutation: {
-    createGoal: async (parent, args) => {
+    createGoal: async (_, args) => {
       const goal = new Goal(args.goalInput);
       const createdGoal = await goal.save()
       const areaRecord = await Area.findById(args.goalInput.area)
@@ -23,11 +23,23 @@ const resolvers = {
       areaRecord.goals.push(goal)
       await areaRecord.save()
       return createdGoal
+    },
+    deleteGoal: async (_, args) => {
+      const goal = await Goal.findById(args.id)
+      const area = await Area.findById(goal.area)
+
+      if(!goal){
+        throw new Error('Goal not found.');
+      }
+      // delete from goal collection
+      const deleted = await Goal.findByIdAndDelete(args.id); 
+
+      //update area collection
+      area.goals.pull(args.id)
+      await area.save()
+
+      return deleted
     }
-    // deleteGoal: async (_, args) => {
-    //   const toDelete = await Goal.findByIdAndRemove(args.id); 
-    //   return toDelete
-    // }
   },
   Goal: {
     area: async(args) => {
