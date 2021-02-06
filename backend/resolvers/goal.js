@@ -4,7 +4,7 @@ const Area = require('../models/area')
 const resolvers = {
   Query: {
     goals:  async () => {   
-      const goals = await Goal.find().populate('area')
+      const goals = await Goal.find()
       return goals
     },
     goal: async (_, args) => {
@@ -22,15 +22,18 @@ const resolvers = {
       }
       areaRecord.goals.push(goal)
       await areaRecord.save()
-      return {
-        ...createdGoal._doc,
-        id: createdGoal._doc._id.toString()
-      }
+      return createdGoal
     }
     // deleteGoal: async (_, args) => {
     //   const toDelete = await Goal.findByIdAndRemove(args.id); 
     //   return toDelete
     // }
+  },
+  Goal: {
+    area: async(args) => {
+      const area = await Area.findById(args.area)
+      return area
+    }
   }
 }
 
