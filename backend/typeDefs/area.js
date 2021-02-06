@@ -12,6 +12,11 @@ module.exports = gql`
     summary: String!
   }
 
+  input AreaUpdateInput{
+    title: String
+    summary: String
+  }
+
   type Query { 
     areas: [Area!]
     area(id: ID!): Area
@@ -19,7 +24,7 @@ module.exports = gql`
   type Mutation { 
     createArea(areaInput: AreaInput): Area
     deleteArea(id: ID!): Area
-    updateArea(id: ID!, areaInput: AreaInput): Area!
+    updateArea(id: ID!, areaInput: AreaUpdateInput): Area!
   }
 
 `

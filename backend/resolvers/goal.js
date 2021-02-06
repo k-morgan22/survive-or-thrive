@@ -32,13 +32,23 @@ const resolvers = {
         throw new Error('Goal not found.');
       }
       // delete from goal collection
-      const deleted = await Goal.findByIdAndDelete(args.id); 
+      const deletedGoal = await Goal.findByIdAndDelete(args.id); 
 
       //update area collection
       area.goals.pull(args.id)
       await area.save()
 
-      return deleted
+      return deletedGoal
+    },
+    updateGoal: async (_, args) => {
+      const goal = await Goal.findById(args.id)
+      
+      if(!goal){
+        throw new Error('Goal not found.');
+      }
+
+      const updatedGoal = await Goal.findByIdAndUpdate(args.id, args.goalInput, {new: true}); 
+      return updatedGoal
     }
   },
   Goal: {

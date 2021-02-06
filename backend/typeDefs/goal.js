@@ -20,6 +20,15 @@ module.exports = gql`
     area: String!
   }
 
+  input GoalUpdateInput{
+    title: String
+    description: String
+    status: String
+    impact: String
+    targetDate: String
+    area: String
+  }
+
   type Query { 
     goals: [Goal!]
     goal(id: ID!): Goal
@@ -28,6 +37,7 @@ module.exports = gql`
   type Mutation { 
     createGoal(goalInput: GoalInput): Goal
     deleteGoal(id: ID!): Goal
+    updateGoal(id: ID!, goalInput: GoalUpdateInput): Goal!
   }
 
 `
