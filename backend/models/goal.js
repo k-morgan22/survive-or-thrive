@@ -9,7 +9,12 @@ const goalSchema = new mongoose.Schema({
   area: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Area"
-  }
+  },
+  milestones: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Milestone"
+  }]
+
 });
 
 module.exports = mongoose.model('Goal', goalSchema);

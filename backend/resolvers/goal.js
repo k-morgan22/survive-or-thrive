@@ -1,5 +1,6 @@
 const Goal = require('../models/goal')
 const Area = require('../models/area')
+const Milestone = require('../models/milestone')
 
 const resolvers = {
   Query: {
@@ -31,6 +32,10 @@ const resolvers = {
       if(!goal){
         throw new Error('Goal not found.');
       }
+
+      //delete milestones linked to specific goal
+      await Milestone.deleteMany({_id: {$in: goal.milestones}})
+
       // delete from goal collection
       const deletedGoal = await Goal.findByIdAndDelete(args.id); 
 
@@ -55,6 +60,10 @@ const resolvers = {
     area: async(args) => {
       const area = await Area.findById(args.area)
       return area
+    },
+    milestones: async(args) => {
+      const goal = await Goal.findById(args.id)
+      return await goal.milestones.map(async(milestone) => await Milestone.findById(milestone) )
     }
   }
 }
