@@ -1,44 +1,43 @@
 const { gql } = require('apollo-server')
 
 module.exports = gql` 
-  type Project { 
+  type Task { 
     id: ID!
     title: String!
     description: String!
     status: String!
     impact: String!
     targetDate: String!
-    milestone: Milestone!
-    tasks: [Task!]
+    project: Project!
   }
 
-  input ProjectInput { 
+  input TaskInput { 
     title: String!
     description: String!
     status: String!
     impact: String!
     targetDate: String!
-    milestone: String!
+    project: String!
   }
 
-  input ProjectUpdateInput{
+  input TaskUpdateInput{
     title: String
     description: String
     status: String
     impact: String
     targetDate: String
-    milestone: String
+    project: String
   }
 
   type Query { 
-    projects: [Project!]
-    project(id: ID!): Project
+    tasks: [Task!]
+    task(id: ID!): Task
   }
 
   type Mutation { 
-    createProject(projectInput: ProjectInput): Project
-    deleteProject(id: ID!): Project
-    updateProject(id: ID!, projectInput: ProjectUpdateInput): Project!
+    createTask(taskInput: TaskInput): Task
+    deleteTask(id: ID!): Task
+    updateTask(id: ID!, taskInput: TaskUpdateInput): Task!
   }
 
 `

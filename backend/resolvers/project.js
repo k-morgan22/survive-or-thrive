@@ -1,5 +1,6 @@
 const Project = require('../models/project')
 const Milestone = require('../models/milestone')
+const Task = require('../models/task')
 
 
 const resolvers = {
@@ -35,6 +36,9 @@ const resolvers = {
         throw new Error('Project not found.');
       }
 
+      //delete tasks linked to specific project
+      await Task.deleteMany({_id: {$in: project.tasks}})
+
       const deletedProject = await Project.findByIdAndDelete(args.id)
 
       //update milestone collection
@@ -58,6 +62,10 @@ const resolvers = {
     milestone: async(args) => {
       const milestone = await Milestone.findById(args.milestone)
       return milestone
+    },
+    tasks: async(args) => {
+      const project = await Project.findById(args.id)
+      return await project.tasks.map(async(task) => await Task.findById(task))
     }
   }
 }
