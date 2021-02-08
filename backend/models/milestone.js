@@ -9,7 +9,11 @@ const milestoneSchema = new mongoose.Schema({
   goal: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Goal"
-  }
+  },
+  projects: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Project"
+  }]
 });
 
 module.exports = mongoose.model('Milestone', milestoneSchema);
