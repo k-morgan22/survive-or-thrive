@@ -1,6 +1,6 @@
-const Entry = require('../models/entry')
-const Reflection = require('../models/reflection')
-const DailyQuest = require('../models/dailyQuest')
+const Entry = require('../../models/dailyQuest/entry')
+const Reflection = require('../../models/dailyQuest/reflection')
+const DailyQuest = require('../../models/dailyQuest/dailyQuest')
 
 const resolvers = {
   Query: {

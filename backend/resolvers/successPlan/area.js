@@ -1,5 +1,5 @@
-const Area = require('../models/area')
-const Goal = require('../models/goal')
+const Area = require('../../models/successPlan/area')
+const Goal = require('../../models/successPlan/goal')
 
 const resolvers = {
   Query: {

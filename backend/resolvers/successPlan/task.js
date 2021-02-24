@@ -1,5 +1,5 @@
-const Task = require('../models/task')
-const Project = require('../models/project')
+const Task = require('../../models/successPlan/task')
+const Project = require('../../models/successPlan/project')
 
 
 const resolvers = {

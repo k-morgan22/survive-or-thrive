@@ -1,7 +1,7 @@
-const Reflection = require('../models/reflection')
-const Entry = require('../models/entry')
-const defaults = require('../defaults/defaultReflections')
-const DailyQuest = require('../models/dailyQuest')
+const Reflection = require('../../models/dailyQuest/reflection')
+const Entry = require('../../models/dailyQuest/entry')
+const defaults = require('../../defaults/defaultReflections')
+const DailyQuest = require('../../models/dailyQuest/dailyQuest')
 
 const resolvers = {
   Query: {

@@ -1,6 +1,6 @@
-const Attempt = require('../models/attempt')
-const Habit = require('../models/habit')
-const DailyQuest = require('../models/dailyQuest')
+const Attempt = require('../../models/dailyQuest/attempt')
+const Habit = require('../../models/dailyQuest/habit')
+const DailyQuest = require('../../models/dailyQuest/dailyQuest')
 
 const resolvers = {
   Query: {

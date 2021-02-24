@@ -1,6 +1,6 @@
-const Milestone = require('../models/milestone')
-const Goal = require('../models/goal')
-const Project = require('../models/project')
+const Milestone = require('../../models/successPlan/milestone')
+const Goal = require('../../models/successPlan/goal')
+const Project = require('../../models/successPlan/project')
 
 
 const resolvers = {
