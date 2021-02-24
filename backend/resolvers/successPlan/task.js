@@ -18,18 +18,16 @@ const resolvers = {
       const task = new Task(args.taskInput);
       const createdTask = await task.save()
 
-      const projectRecord = await Project.findById(args.taskInput.project)
-      if(!projectRecord){
-        throw new Error('Project not found')
-      }
+      await Project.updateOne({_id: createdTask.project},{
+        $push: {
+          tasks: createdTask
+        }
+      })
 
-      projectRecord.tasks.push(task)
-      await projectRecord.save()
       return createdTask
     },
     deleteTask: async(_, args) => {
       const task = await Task.findById(args.id)
-      const project = await Project.findById(task.project)
 
       if(!task){
         throw new Error('Task not found.');
@@ -38,8 +36,11 @@ const resolvers = {
       const deletedTask = await Task.findByIdAndDelete(args.id)
 
       //update project collection
-      project.tasks.pull(args.id)
-      await project.save()
+      await Project.updateOne({_id: deletedTask.project},{
+        $pull: {
+          tasks: deletedTask.id
+        }
+      })
 
       return deletedTask
     },

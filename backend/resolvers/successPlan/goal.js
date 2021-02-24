@@ -17,18 +17,18 @@ const resolvers = {
     createGoal: async (_, args) => {
       const goal = new Goal(args.goalInput);
       const createdGoal = await goal.save()
-      const areaRecord = await Area.findById(args.goalInput.area)
-      if(!areaRecord){
-        throw new Error('Area not found.');
-      }
-      areaRecord.goals.push(goal)
-      await areaRecord.save()
+
+      await Area.updateOne({_id: createdGoal.area},{
+        $push: {
+          goals: createdGoal
+        }
+      })
+
       return createdGoal
     },
     deleteGoal: async (_, args) => {
       const goal = await Goal.findById(args.id)
-      const area = await Area.findById(goal.area)
-
+  
       if(!goal){
         throw new Error('Goal not found.');
       }
@@ -40,8 +40,11 @@ const resolvers = {
       const deletedGoal = await Goal.findByIdAndDelete(args.id); 
 
       //update area collection
-      area.goals.pull(args.id)
-      await area.save()
+      await Area.updateOne({_id: deletedGoal.area},{
+        $pull: {
+          goals: deletedGoal.id
+        }
+      })
 
       return deletedGoal
     },
@@ -62,8 +65,8 @@ const resolvers = {
       return area
     },
     milestones: async(args) => {
-      const goal = await Goal.findById(args.id)
-      return await goal.milestones.map(async(milestone) => await Milestone.findById(milestone) )
+      const milestones = await Milestone.find({_id: {$in: args.milestones}})
+      return milestones
     }
   }
 }

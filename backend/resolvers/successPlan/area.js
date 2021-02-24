@@ -34,8 +34,8 @@ const resolvers = {
   },
   Area: {
     goals: async(args) => {
-      const area = await Area.findById(args.id)
-      return await area.goals.map(async (goal) => await Goal.findById(goal))
+      const goals = await Goal.find({_id: {$in: args.goals}})
+      return goals
     }
   }
 }

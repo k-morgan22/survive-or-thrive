@@ -19,18 +19,16 @@ const resolvers = {
       const project = new Project(args.projectInput);
       const createdProject = await project.save()
 
-      const milestoneRecord = await Milestone.findById(args.projectInput.milestone)
-      if(!milestoneRecord){
-        throw new Error('Milestone not found')
-      }
+      await Milestone.updateOne({_id: createdProject.milestone},{
+        $push: {
+          projects: createdProject
+        }
+      })
 
-      milestoneRecord.projects.push(project)
-      await milestoneRecord.save()
       return createdProject
     },
     deleteProject: async(_, args) => {
       const project = await Project.findById(args.id)
-      const milestone = await Milestone.findById(project.milestone)
 
       if(!project){
         throw new Error('Project not found.');
@@ -42,8 +40,11 @@ const resolvers = {
       const deletedProject = await Project.findByIdAndDelete(args.id)
 
       //update milestone collection
-      milestone.projects.pull(args.id)
-      await milestone.save()
+      await Milestone.updateOne({_id: deletedProject.milestone},{
+        $pull: {
+          projects: deletedProject.id
+        }
+      })
 
       return deletedProject
     },
@@ -64,8 +65,8 @@ const resolvers = {
       return milestone
     },
     tasks: async(args) => {
-      const project = await Project.findById(args.id)
-      return await project.tasks.map(async(task) => await Task.findById(task))
+      const tasks = await Task.find({_id: {$in: args.tasks}})
+      return tasks
     }
   }
 }
